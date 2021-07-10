@@ -1,18 +1,40 @@
 import { useEffect, useState, useMemo } from "react";
 import { useTable } from "react-table";
+import numeral from "numeral";
 
 import * as S from "./styles";
 
 const StoresTable = () => {
+  const [stores, setStores] = useState([]);
+
+  useEffect(() => {
+    async function fetchStores() {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/store/find`,
+        {
+          method: "GET",
+        }
+      );
+      const stores = await response.json();
+      setStores(stores);
+    }
+
+    fetchStores();
+  }, []);
+
   const columns = useMemo(
     () => [
       {
         Header: "Nome",
-        accessor: "col1", // accessor is the "key" in the data
+        accessor: "name", // accessor is the "key" in the data
       },
       {
-        Header: "Última atualização",
-        accessor: "col2",
+        Header: "Criada em",
+        accessor: "createdAt",
+      },
+      {
+        Header: "Total de vendas",
+        accessor: "totalSales",
       },
     ],
     []
@@ -21,17 +43,33 @@ const StoresTable = () => {
   const data = useMemo(
     () => [
       {
-        col1: "Hello",
-        col2: "World",
+        col1: "name",
+        col2: "createdAt",
+        col3: "totalSales",
       },
     ],
     []
   );
 
-  const tableInstance = useTable({ columns, data });
+  const data2 = useMemo(
+    () =>
+      stores.map((store) => {
+        return {
+          _id: store._id,
+          name: store.name,
+          createdAt: store.formatedCreatedAt,
+          totalSales: numeral(store.amountOfRegisteredUpdates).format("0,0"),
+        };
+      }),
+    [stores]
+  );
+
+  const tableInstance = useTable({ columns, data: data2 });
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
+
+  const handleOnRowClick = (original) => {};
 
   return (
     <S.Table {...getTableProps()}>
@@ -39,9 +77,9 @@ const StoresTable = () => {
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <S.Th {...column.getHeaderProps()}>
+              <S.ThHeader {...column.getHeaderProps()}>
                 {column.render("Header")}
-              </S.Th>
+              </S.ThHeader>
             ))}
           </tr>
         ))}
@@ -50,23 +88,25 @@ const StoresTable = () => {
         {rows.map((row) => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()}>
+            <S.Tr
+              {...row.getRowProps()}
+              onClick={() => {
+                console.log(row);
+              }}
+            >
               {row.cells.map((cell) => {
                 return (
-                  <td
+                  <S.TdContent
                     {...cell.getCellProps()}
                     style={{
                       padding: "10px",
-                      border: "solid 1px gray",
-                      background: "papayawhip",
                     }}
                   >
-                    {console.log(cell)}
-                    <a href="#">test</a>
-                  </td>
+                    {cell.render("Cell")}
+                  </S.TdContent>
                 );
               })}
-            </tr>
+            </S.Tr>
           );
         })}
       </tbody>
