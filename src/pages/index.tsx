@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 
+import * as S from "../styles/home";
+
+import StoresTable from "../components/StoresTable";
+
 export default function Home() {
   const [stores, setStores] = useState([]);
 
@@ -18,5 +22,9 @@ export default function Home() {
     fetchStores();
   }, []);
 
-  return <h1>teste</h1>;
+  return (
+    <S.HomePageWrapper>
+      <StoresTable />
+    </S.HomePageWrapper>
+  );
 }
