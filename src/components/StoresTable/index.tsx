@@ -3,25 +3,13 @@ import { useTable } from "react-table";
 import numeral from "numeral";
 
 import * as S from "./styles";
+import Router from "next/router";
 
-const StoresTable = () => {
-  const [stores, setStores] = useState([]);
+interface StoresTableProps {
+  stores: Array<any>;
+}
 
-  useEffect(() => {
-    async function fetchStores() {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/store/find`,
-        {
-          method: "GET",
-        }
-      );
-      const stores = await response.json();
-      setStores(stores);
-    }
-
-    fetchStores();
-  }, []);
-
+const StoresTable = ({ stores }: StoresTableProps) => {
   const columns = useMemo(
     () => [
       {
@@ -35,17 +23,6 @@ const StoresTable = () => {
       {
         Header: "Total de vendas",
         accessor: "totalSales",
-      },
-    ],
-    []
-  );
-
-  const data = useMemo(
-    () => [
-      {
-        col1: "name",
-        col2: "createdAt",
-        col3: "totalSales",
       },
     ],
     []
@@ -69,7 +46,9 @@ const StoresTable = () => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
 
-  const handleOnRowClick = (original) => {};
+  const handleOnRowClick = (original) => {
+    Router.push(`/store/${original._id}`);
+  };
 
   return (
     <S.Table {...getTableProps()}>
@@ -90,9 +69,7 @@ const StoresTable = () => {
           return (
             <S.Tr
               {...row.getRowProps()}
-              onClick={() => {
-                console.log(row);
-              }}
+              onClick={() => handleOnRowClick(row.original)}
             >
               {row.cells.map((cell) => {
                 return (

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const HomePageWrapper = styled.div`
+export const StorePageWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -10,16 +10,13 @@ export const HomePageWrapper = styled.div`
   background: #ebeced;
 `;
 
-export const StoresTableWrapper = styled.div``;
-
-export const StoreInfo = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-  align-items: center;
+export const GetBackToHome = styled.a`
+  text-decoration: underline;
+  cursor: pointer;
+  margin-bottom: 25px;
 `;
 
-export const StoresTitle = styled.h1`
+export const StoreTitle = styled.h1`
   font-size: 49px;
   background-color: #f3ec78;
   background-image: linear-gradient(90deg, #ff0099, #9900ff);
@@ -28,11 +25,5 @@ export const StoresTitle = styled.h1`
   -moz-background-clip: text;
   -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
-
   margin-bottom: 35px;
-`;
-
-export const Credits = styled.b`
-  position: absolute;
-  bottom: 20px;
 `;
