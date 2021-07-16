@@ -6,8 +6,9 @@ export const StorePageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 20px;
   background: #ebeced;
+  overflow: inherit;
+  padding: 20px 60px;
 `;
 
 export const GetBackToHome = styled.a`
@@ -25,5 +26,12 @@ export const StoreTitle = styled.h1`
   -moz-background-clip: text;
   -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
+  text-align: center;
+`;
+
+export const DeleteStoreLink = styled.a`
+  cursor: pointer;
   margin-bottom: 35px;
+  color: #e32929;
+  font-weight: 600;
 `;

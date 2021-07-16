@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLoading, BallTriangle } from "@agney/react-loading";
 
 import * as S from "../styles/home";
 
@@ -7,8 +8,13 @@ import Button from "../components/Button";
 import AddStoreModal from "../components/AddStoreModal";
 
 export default function Home() {
-  const [stores, setStores] = useState([]);
+  const [stores, setStores] = useState(null);
   const [showAddStoreModal, setShowAddStoreModal] = useState(false);
+
+  const { containerProps, indicatorEl } = useLoading({
+    loading: true,
+    indicator: <BallTriangle width="35" />,
+  });
 
   useEffect(() => {
     async function fetchStores() {
@@ -34,13 +40,37 @@ export default function Home() {
       <S.HomePageWrapper>
         <S.StoresTitle>Suas lojas</S.StoresTitle>
         <S.StoresTableWrapper>
-          <S.StoreInfo>
-            <b>Observando {stores.length} lojas</b>
-            <Button kind="primary" onClick={handleButtonClick}>
-              Adicionar nova loja
-            </Button>
-          </S.StoreInfo>
-          <StoresTable stores={stores} />
+          {!!stores ? (
+            <>
+              <S.StoreInfo>
+                <b>Observando {stores.length} lojas</b>
+                <Button kind="primary" onClick={handleButtonClick}>
+                  Adicionar nova loja
+                </Button>
+              </S.StoreInfo>
+              {stores.length ? (
+                <StoresTable stores={stores} />
+              ) : (
+                <span>Nenhuma loja cadastrada. Comece cadastrando uma :)</span>
+              )}
+            </>
+          ) : (
+            <section
+              {...containerProps}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+                position: "absolute",
+                top: "30%",
+                left: "45%",
+              }}
+            >
+              {indicatorEl}
+              <br />
+              <span>Carregando</span> {/* renders only while loading */}
+            </section>
+          )}
         </S.StoresTableWrapper>
       </S.HomePageWrapper>
       <AddStoreModal

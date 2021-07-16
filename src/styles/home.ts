@@ -8,6 +8,7 @@ export const HomePageWrapper = styled.div`
   align-items: center;
   padding-top: 20px;
   background: #ebeced;
+  overflow: inherit;
 `;
 
 export const StoresTableWrapper = styled.div``;

@@ -48,6 +48,7 @@ const AddStoreModal = ({ showModal, setShowModal }: AddStoreModalProps) => {
         name: storeName,
         url: storeUrl,
       });
+      Router.reload();
       toast("🚀 Sucesso em adicionar nova loja!", {
         position: "top-right",
         autoClose: 5000,
@@ -57,7 +58,6 @@ const AddStoreModal = ({ showModal, setShowModal }: AddStoreModalProps) => {
         draggable: true,
         progress: undefined,
       });
-      Router.reload();
     } catch (err) {
       console.log(err);
     }

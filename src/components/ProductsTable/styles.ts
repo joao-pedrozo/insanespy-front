@@ -28,10 +28,34 @@ export const Tr = styled.tr`
   &:hover {
     background: #f2f2f2;
   }
+
+  td:first-child {
+    max-width: 90px;
+  }
 `;
 
 export const TdContent = styled.td`
   border-right: 1px solid #ccc;
   border-top: 1px solid #ccc;
   text-align: center;
+
+  div {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  width: 200px;
+`;
+
+export const Pagination = styled.div`
+  margin-top: 15px;
+
+  button {
+    padding: 10px;
+    font-family: "Rubik";
+    font-weight: 600;
+    font-size: 12px;
+  }
 `;

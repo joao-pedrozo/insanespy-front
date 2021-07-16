@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@agney/react-loading": "^0.1.2",
     "@types/cors": "^2.8.10",
     "@types/express": "^4.17.12",
     "@types/numeral": "^2.0.1",
