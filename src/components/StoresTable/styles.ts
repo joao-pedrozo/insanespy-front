@@ -31,3 +31,14 @@ export const TdContent = styled.td`
   border-top: 1px solid #ccc;
   text-align: center;
 `;
+
+export const Pagination = styled.div`
+  margin-top: 15px;
+
+  button {
+    padding: 10px;
+    font-family: "Rubik";
+    font-weight: 600;
+    font-size: 12px;
+  }
+`;

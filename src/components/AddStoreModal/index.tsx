@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 import BaseModal from "../BaseModal";
 import Button from "../Button";
@@ -12,11 +12,17 @@ import * as S from "./styles";
 interface AddStoreModalProps {
   showModal: boolean;
   setShowModal: (active: boolean) => void;
+  setHasDataUpdated: (active: boolean) => void;
 }
 
-const AddStoreModal = ({ showModal, setShowModal }: AddStoreModalProps) => {
+const AddStoreModal = ({
+  showModal,
+  setShowModal,
+  setHasDataUpdated,
+}: AddStoreModalProps) => {
   const [storeName, setStoreName] = useState("");
   const [storeUrl, setStoreUrl] = useState("");
+  const router = useRouter();
 
   const handleOnButtonClick = async () => {
     if (!storeName) {
@@ -48,7 +54,6 @@ const AddStoreModal = ({ showModal, setShowModal }: AddStoreModalProps) => {
         name: storeName,
         url: storeUrl,
       });
-      Router.push("/");
       toast("🚀 Sucesso em adicionar nova loja!", {
         position: "top-right",
         autoClose: 5000,
@@ -58,7 +63,18 @@ const AddStoreModal = ({ showModal, setShowModal }: AddStoreModalProps) => {
         draggable: true,
         progress: undefined,
       });
+      setShowModal(false);
+      setHasDataUpdated(true);
     } catch (err) {
+      toast.error("❌ Erro ao cadastrar loja", {
+        position: "top-right",
+        autoClose: 8000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       console.log(err);
     }
   };

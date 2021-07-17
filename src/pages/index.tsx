@@ -10,6 +10,7 @@ import AddStoreModal from "../components/AddStoreModal";
 export default function Home() {
   const [stores, setStores] = useState(null);
   const [showAddStoreModal, setShowAddStoreModal] = useState(false);
+  const [hasDataUpdated, setHasDataUpdated] = useState(false);
 
   const { containerProps, indicatorEl } = useLoading({
     loading: true,
@@ -26,10 +27,11 @@ export default function Home() {
       );
       const stores = await response.json();
       setStores(stores);
+      setHasDataUpdated(false);
     }
 
     fetchStores();
-  }, []);
+  }, [hasDataUpdated]);
 
   const handleButtonClick = () => {
     setShowAddStoreModal((prev) => !prev);
@@ -76,6 +78,7 @@ export default function Home() {
       <AddStoreModal
         showModal={showAddStoreModal}
         setShowModal={setShowAddStoreModal}
+        setHasDataUpdated={setHasDataUpdated}
       />
     </>
   );

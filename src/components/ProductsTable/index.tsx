@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useTable, useSortBy, usePagination } from "react-table";
 import numeral from "numeral";
+import Image from "next/image";
 
 import { howLongHasBeenSinceDate } from "../../utils/date";
 
@@ -31,21 +32,26 @@ const StoresTable = ({ products }: ProductTableProps) => {
         accessor: "image",
         maxWidth: 150,
         minWidth: 150,
+        id: 1,
+        // eslint-disable-next-line react/display-name
         Cell: (props) => {
-          return <img src={props.value} alt="" width={50} height={50} />;
+          return <Image src={props.value} alt="" width={50} height={50} />;
         },
       },
       {
         Header: "Nome do produto",
         accessor: "name",
+        id: 2,
+        // eslint-disable-next-line react/display-name
         Cell: (props) => {
-          console.log(props);
           return <span title={props.value}>{props.value}</span>;
         },
       },
       {
         Header: "Última venda",
         accessor: "lastSale",
+        id: 3,
+        // eslint-disable-next-line react/display-name
         Cell: (props) => {
           return <span>{howLongHasBeenSinceDate(props.value)}</span>;
         },
@@ -53,6 +59,7 @@ const StoresTable = ({ products }: ProductTableProps) => {
       {
         Header: "Vendas observadas",
         accessor: "amountOfSales",
+        id: 4,
       },
     ],
     []
@@ -61,8 +68,6 @@ const StoresTable = ({ products }: ProductTableProps) => {
   const data = useMemo(
     () =>
       products.map((product) => {
-        console.log(product);
-
         return {
           image: product.image,
           name: product.title,
@@ -119,14 +124,19 @@ const StoresTable = ({ products }: ProductTableProps) => {
           <S.Table {...getTableProps()}>
             <thead>
               {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <S.ThHeader
-                      {...column.getHeaderProps(column.getSortByToggleProps())}
-                    >
-                      {column.render("Header")}
-                    </S.ThHeader>
-                  ))}
+                <tr {...headerGroup.getHeaderGroupProps()} key={1}>
+                  {headerGroup.headers.map((column) => {
+                    return (
+                      <S.ThHeader
+                        {...column.getHeaderProps(
+                          column.getSortByToggleProps()
+                        )}
+                        key={column.id}
+                      >
+                        {column.render("Header")}
+                      </S.ThHeader>
+                    );
+                  })}
                 </tr>
               ))}
             </thead>
@@ -134,8 +144,9 @@ const StoresTable = ({ products }: ProductTableProps) => {
               {page.map((row) => {
                 prepareRow(row);
                 return (
-                  <S.Tr {...row.getRowProps()}>
+                  <S.Tr {...row.getRowProps()} key={row.id}>
                     {row.cells.map((cell) => {
+                      console.log(cell);
                       return (
                         <S.TdContent
                           {...cell.getCellProps()}
