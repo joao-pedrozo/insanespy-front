@@ -3,24 +3,34 @@ import styled from "styled-components";
 export const AddStoreModalWrapper = styled.div`
   width: 100%;
   display: flex;
-  align-items: center;
   flex-direction: column;
   background: #fff;
   padding: 60px;
   border-radius: 4px;
   max-width: 600px;
+  text-align: center;
+
+  span {
+    max-width: 400px;
+    line-height: 1.5;
+  }
 
   h1 {
-    text-align: center;
     width: 400px;
-    margin-bottom: 26px;
+    margin-bottom: 20px;
 
     .highlighted {
       color: #9900ff;
     }
   }
+`;
 
-  span:first-child {
-    color: red;
+export const ButtonsWrapper = styled.div`
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+
+  button:first-child {
+    margin-right: 10px;
   }
 `;

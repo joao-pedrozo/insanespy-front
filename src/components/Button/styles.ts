@@ -11,21 +11,21 @@ const colors = {
     fontColor: "#fff",
     border: "none",
     onHover: {
-      background: shade(0, "#ff0099"),
+      background: shade(0.1, "#ff0099"),
     },
     onActive: {
       background: shade(0.2, "#ff0099"),
     },
   },
   cancel: {
-    backgroundColor: "#fff",
+    backgroundColor: "transparent",
     fontColor: "#ff0099",
     border: "1px solid #ff0099",
     onHover: {
-      background: lighten(0.1, "#fff"),
+      background: "#fff",
     },
     onActive: {
-      background: lighten(0.4, "#fff"),
+      background: "#fcfcfc",
     },
   },
 };
@@ -42,10 +42,9 @@ export const Button = styled.button<StyledButtonProps>`
   font-family: "Rubik", sans-serif;
 
   &:hover {
-    background: ${(props) => shade(0.2, colors[props.kind].onHover.background)};
+    background: ${(props) => colors[props.kind].onHover.background};
   }
   &:active {
-    background: ${(props) =>
-      shade(0.4, colors[props.kind].onActive.background)};
+    background: ${(props) => colors[props.kind].onActive.background};
   }
 `;

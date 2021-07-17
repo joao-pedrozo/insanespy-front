@@ -112,94 +112,102 @@ const StoresTable = ({ products }: ProductTableProps) => {
     state: { pageIndex, pageSize },
   } = tableInstance;
 
-  if (products.length) {
-    return (
-      <>
-        <S.Table {...getTableProps()}>
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <S.ThHeader
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                  >
-                    {column.render("Header")}
-                  </S.ThHeader>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {page.map((row) => {
-              prepareRow(row);
-              return (
-                <S.Tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <S.TdContent
-                        {...cell.getCellProps()}
-                        style={{
-                          padding: "10px",
-                        }}
-                      >
-                        <div>{cell.render("Cell")}</div>
-                      </S.TdContent>
-                    );
-                  })}
-                </S.Tr>
-              );
-            })}
-          </tbody>
-        </S.Table>
-        <S.Pagination>
-          <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-            {"<<"}
-          </button>{" "}
-          <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-            {"<"}
-          </button>{" "}
-          <button onClick={() => nextPage()} disabled={!canNextPage}>
-            {">"}
-          </button>{" "}
-          <button
-            onClick={() => gotoPage(pageCount - 1)}
-            disabled={!canNextPage}
-          >
-            {">>"}
-          </button>{" "}
-          <span>
-            Página{" "}
-            <strong>
-              {pageIndex + 1} de {pageOptions.length}
-            </strong>{" "}
-          </span>
-          <span>
-            | Ir para página:{" "}
-            <input
-              type="number"
-              defaultValue={pageIndex + 1}
+  if (products) {
+    if (products.length) {
+      return (
+        <>
+          <S.Table {...getTableProps()}>
+            <thead>
+              {headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <S.ThHeader
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                    >
+                      {column.render("Header")}
+                    </S.ThHeader>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {page.map((row) => {
+                prepareRow(row);
+                return (
+                  <S.Tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => {
+                      return (
+                        <S.TdContent
+                          {...cell.getCellProps()}
+                          style={{
+                            padding: "10px",
+                          }}
+                        >
+                          <div>{cell.render("Cell")}</div>
+                        </S.TdContent>
+                      );
+                    })}
+                  </S.Tr>
+                );
+              })}
+            </tbody>
+          </S.Table>
+          <S.Pagination>
+            <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+              {"<<"}
+            </button>{" "}
+            <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+              {"<"}
+            </button>{" "}
+            <button onClick={() => nextPage()} disabled={!canNextPage}>
+              {">"}
+            </button>{" "}
+            <button
+              onClick={() => gotoPage(pageCount - 1)}
+              disabled={!canNextPage}
+            >
+              {">>"}
+            </button>{" "}
+            <span>
+              Página{" "}
+              <strong>
+                {pageIndex + 1} de {pageOptions.length}
+              </strong>{" "}
+            </span>
+            <span>
+              | Ir para página:{" "}
+              <input
+                type="number"
+                defaultValue={pageIndex + 1}
+                onChange={(e) => {
+                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                  gotoPage(page);
+                }}
+                style={{ width: "100px" }}
+              />
+            </span>{" "}
+            <select
+              value={pageSize}
               onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                gotoPage(page);
+                setPageSize(Number(e.target.value));
               }}
-              style={{ width: "100px" }}
-            />
-          </span>{" "}
-          <select
-            value={pageSize}
-            onChange={(e) => {
-              setPageSize(Number(e.target.value));
-            }}
-          >
-            {[10, 20, 30, 40, 50].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                Mostrar {pageSize}
-              </option>
-            ))}
-          </select>
-        </S.Pagination>
-      </>
-    );
+            >
+              {[10, 20, 30, 40, 50].map((pageSize) => (
+                <option key={pageSize} value={pageSize}>
+                  Mostrar {pageSize}
+                </option>
+              ))}
+            </select>
+          </S.Pagination>
+        </>
+      );
+    } else {
+      return (
+        <span>
+          Essa loja não possuí nenhum produto ativo nas últimas 24h :(
+        </span>
+      );
+    }
   } else {
     return <span>Carregando...</span>;
   }

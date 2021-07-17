@@ -78,7 +78,7 @@ export const StorePage = () => {
             flexDirection: "column",
             position: "absolute",
             top: "30%",
-            left: "45%",
+            left: "50%",
           }}
         >
           {indicatorEl}
