@@ -32,7 +32,6 @@ const StoresTable = ({ products }: ProductTableProps) => {
         accessor: "image",
         maxWidth: 150,
         minWidth: 150,
-        id: 1,
         // eslint-disable-next-line react/display-name
         Cell: (props) => {
           return <Image src={props.value} alt="" width={50} height={50} />;
@@ -41,7 +40,6 @@ const StoresTable = ({ products }: ProductTableProps) => {
       {
         Header: "Nome do produto",
         accessor: "name",
-        id: 2,
         // eslint-disable-next-line react/display-name
         Cell: (props) => {
           return <span title={props.value}>{props.value}</span>;
@@ -50,7 +48,6 @@ const StoresTable = ({ products }: ProductTableProps) => {
       {
         Header: "Última venda",
         accessor: "lastSale",
-        id: 3,
         // eslint-disable-next-line react/display-name
         Cell: (props) => {
           return <span>{howLongHasBeenSinceDate(props.value)}</span>;
@@ -59,7 +56,6 @@ const StoresTable = ({ products }: ProductTableProps) => {
       {
         Header: "Vendas observadas",
         accessor: "amountOfSales",
-        id: 4,
         Cell: (props) => (
           <span>{numeral(props.value).format("0,0").replace(",", ".")}</span>
         ),
@@ -90,7 +86,7 @@ const StoresTable = ({ products }: ProductTableProps) => {
       initialState: {
         sortBy: [
           {
-            id: "lastSale",
+            id: "amountOfSales",
             desc: true,
           },
         ],
@@ -125,14 +121,13 @@ const StoresTable = ({ products }: ProductTableProps) => {
           <S.Table {...getTableProps()}>
             <thead>
               {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()} key={1}>
+                <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => {
                     return (
                       <S.ThHeader
                         {...column.getHeaderProps(
                           column.getSortByToggleProps()
                         )}
-                        key={column.id}
                       >
                         {column.render("Header")}
                       </S.ThHeader>
@@ -145,7 +140,7 @@ const StoresTable = ({ products }: ProductTableProps) => {
               {page.map((row) => {
                 prepareRow(row);
                 return (
-                  <S.Tr {...row.getRowProps()} key={row.id}>
+                  <S.Tr {...row.getRowProps()}>
                     {row.cells.map((cell) => {
                       return (
                         <S.TdContent
