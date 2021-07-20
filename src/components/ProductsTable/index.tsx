@@ -60,6 +60,9 @@ const StoresTable = ({ products }: ProductTableProps) => {
         Header: "Vendas observadas",
         accessor: "amountOfSales",
         id: 4,
+        Cell: (props) => (
+          <span>{numeral(props.value).format("0,0").replace(",", ".")}</span>
+        ),
       },
     ],
     []
@@ -74,9 +77,7 @@ const StoresTable = ({ products }: ProductTableProps) => {
           lastSale: !!product.registeredUpdates.length
             ? product.registeredUpdates[product.registeredUpdates.length - 1]
             : product.firstRegisteredUpdateAtShopify,
-          amountOfSales: numeral(product.registeredUpdates.length).format(
-            "0,0"
-          ),
+          amountOfSales: product.registeredUpdates.length,
         };
       }),
     [products]

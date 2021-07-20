@@ -17,20 +17,26 @@ export default function Home() {
     indicator: <BallTriangle width="35" />,
   });
 
-  useEffect(() => {
-    async function fetchStores() {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/store/find`,
-        {
-          method: "GET",
-        }
-      );
-      const stores = await response.json();
-      setStores(stores);
-      setHasDataUpdated(false);
-    }
+  async function fetchStores() {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/store/find`,
+      {
+        method: "GET",
+      }
+    );
+    const stores = await response.json();
+    setStores(stores);
+    setHasDataUpdated(false);
+  }
 
+  useEffect(() => {
     fetchStores();
+
+    const interval = setInterval(() => {
+      fetchStores();
+    }, 15000);
+
+    return () => clearInterval(interval);
   }, [hasDataUpdated]);
 
   const handleButtonClick = () => {

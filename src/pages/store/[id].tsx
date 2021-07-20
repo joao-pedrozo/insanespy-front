@@ -27,23 +27,29 @@ export const StorePage = () => {
     indicator: <BallTriangle width="35" />,
   });
 
-  useEffect(() => {
-    async function fetchStoreData() {
-      try {
-        const response = await api.get(`store/find/${id}`);
+  async function fetchStoreData() {
+    try {
+      const response = await api.get(`store/find/${id}`);
 
-        setStoreData(response.data.store);
-        setStoreProductsData(response.data.products);
-      } catch (err) {
-        console.log(err);
-      }
+      setStoreData(response.data.store);
+      setStoreProductsData(response.data.products);
+    } catch (err) {
+      console.log(err);
     }
+  }
 
+  useEffect(() => {
     if (!id) {
       return;
     }
 
     fetchStoreData();
+
+    const interval = setInterval(() => {
+      fetchStoreData();
+    }, 15000);
+
+    return () => clearInterval(interval);
   }, [id]);
 
   const handleOnRemoveStore = () => {

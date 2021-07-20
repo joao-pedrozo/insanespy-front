@@ -25,6 +25,9 @@ const StoresTable = ({ stores }: StoresTableProps) => {
       {
         Header: "Total de vendas",
         accessor: "totalSales",
+        Cell: (props) => (
+          <span>{numeral(props.value).format("0,0").replace(",", ".")}</span>
+        ),
       },
     ],
     []
@@ -43,7 +46,22 @@ const StoresTable = ({ stores }: StoresTableProps) => {
     [stores]
   );
 
-  const tableInstance = useTable({ columns, data }, useSortBy, usePagination);
+  const tableInstance = useTable(
+    {
+      columns,
+      data,
+      initialState: {
+        sortBy: [
+          {
+            id: "totalSales",
+            desc: true,
+          },
+        ],
+      },
+    },
+    useSortBy,
+    usePagination
+  );
 
   const {
     getTableProps,
