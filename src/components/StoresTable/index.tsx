@@ -40,7 +40,7 @@ const StoresTable = ({ stores }: StoresTableProps) => {
           _id: store._id,
           name: store.name,
           createdAt: store.createdAt,
-          totalSales: numeral(store.amountOfRegisteredUpdates).format("0,0"),
+          totalSales: store.amountOfRegisteredUpdates,
         };
       }),
     [stores]

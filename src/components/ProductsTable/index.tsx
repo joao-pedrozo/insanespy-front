@@ -90,7 +90,7 @@ const StoresTable = ({ products }: ProductTableProps) => {
       initialState: {
         sortBy: [
           {
-            id: "amountOfSales",
+            id: "lastSale",
             desc: true,
           },
         ],
@@ -147,7 +147,6 @@ const StoresTable = ({ products }: ProductTableProps) => {
                 return (
                   <S.Tr {...row.getRowProps()} key={row.id}>
                     {row.cells.map((cell) => {
-                      console.log(cell);
                       return (
                         <S.TdContent
                           {...cell.getCellProps()}
