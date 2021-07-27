@@ -18,9 +18,15 @@ const StoresTable = ({ stores }: StoresTableProps) => {
         accessor: "name",
       },
       {
-        Header: "Registrada",
-        accessor: "createdAt",
-        Cell: (props) => <span>{howLongHasBeenSinceDate(props.value)}</span>,
+        Header: "Última venda",
+        accessor: "lastSale",
+        Cell: (props) => {
+          if (props.value) {
+            return <span>{howLongHasBeenSinceDate(props.value)}</span>;
+          } else {
+            return <span>Nenhuma venda registrada</span>;
+          }
+        },
       },
       {
         Header: "Total de vendas",
@@ -35,12 +41,12 @@ const StoresTable = ({ stores }: StoresTableProps) => {
 
   const data = useMemo(
     () =>
-      stores.map((store) => {
+      stores.map(({ _id, name, lastSale, totalSales }) => {
         return {
-          _id: store._id,
-          name: store.name,
-          createdAt: store.createdAt,
-          totalSales: store.amountOfRegisteredUpdates,
+          _id,
+          name: name,
+          lastSale: lastSale,
+          totalSales: totalSales,
         };
       }),
     [stores]

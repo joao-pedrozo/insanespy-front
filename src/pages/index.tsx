@@ -31,12 +31,6 @@ export default function Home() {
 
   useEffect(() => {
     fetchStores();
-
-    const interval = setInterval(() => {
-      fetchStores();
-    }, 15000);
-
-    return () => clearInterval(interval);
   }, [hasDataUpdated]);
 
   const handleButtonClick = () => {

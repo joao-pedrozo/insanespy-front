@@ -44,12 +44,6 @@ export const StorePage = () => {
     }
 
     fetchStoreData();
-
-    const interval = setInterval(() => {
-      fetchStoreData();
-    }, 15000);
-
-    return () => clearInterval(interval);
   }, [id]);
 
   const handleOnRemoveStore = () => {
@@ -68,7 +62,10 @@ export const StorePage = () => {
           <S.DeleteStoreLink onClick={handleOnRemoveStore}>
             remover loja
           </S.DeleteStoreLink>
-          <ProductsTable products={storeProductsData} />
+          <ProductsTable
+            storeUrl={storeData.url}
+            products={storeProductsData}
+          />
           <RemoveStoreModal
             setShowModal={setShowRemoveStoreModal}
             showModal={showRemoveStoreModal}

@@ -13,18 +13,21 @@ interface Product {
   createdAtShopify: string;
   firstRegisteredUpdateAtShopify: string;
   image: string;
-  registeredUpdates: [Date];
   shopifyId: number;
   storeId: string;
   title: string;
   updatedAt: string;
+  shopifyHandle: string;
 }
 
 interface ProductTableProps {
   products: [Product];
+  storeUrl: string;
 }
 
-const StoresTable = ({ products }: ProductTableProps) => {
+const StoresTable = ({ products, storeUrl }: ProductTableProps) => {
+  console.log(storeUrl);
+
   const columns = useMemo(
     () => [
       {
@@ -68,12 +71,12 @@ const StoresTable = ({ products }: ProductTableProps) => {
     () =>
       products.map((product) => {
         return {
+          storeUrl,
           image: product.image,
           name: product.title,
-          lastSale: !!product.registeredUpdates.length
-            ? product.registeredUpdates[product.registeredUpdates.length - 1]
-            : product.firstRegisteredUpdateAtShopify,
-          amountOfSales: product.registeredUpdates.length,
+          lastSale: product.lastUpdatedAt,
+          amountOfSales: product.totalSales,
+          handle: product.shopifyHandle,
         };
       }),
     [products]
@@ -114,6 +117,10 @@ const StoresTable = ({ products }: ProductTableProps) => {
     state: { pageIndex, pageSize },
   } = tableInstance;
 
+  const handleOnRowClick = (original) => {
+    window.open(`${storeUrl}/products/${original.handle}`);
+  };
+
   if (products) {
     if (products.length) {
       return (
@@ -140,7 +147,10 @@ const StoresTable = ({ products }: ProductTableProps) => {
               {page.map((row) => {
                 prepareRow(row);
                 return (
-                  <S.Tr {...row.getRowProps()}>
+                  <S.Tr
+                    onClick={() => handleOnRowClick(row.original)}
+                    {...row.getRowProps(row.original)}
+                  >
                     {row.cells.map((cell) => {
                       return (
                         <S.TdContent
