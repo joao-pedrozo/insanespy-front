@@ -26,8 +26,6 @@ interface ProductTableProps {
 }
 
 const StoresTable = ({ products, storeUrl }: ProductTableProps) => {
-  console.log(storeUrl);
-
   const columns = useMemo(
     () => [
       {

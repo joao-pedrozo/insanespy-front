@@ -9,7 +9,10 @@ export const Table = styled.table`
 
   th,
   td {
-    max-width: 350px;
+    width: 170px;
+    height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 

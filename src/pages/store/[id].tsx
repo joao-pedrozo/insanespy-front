@@ -2,11 +2,16 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useLoading, BallTriangle } from "@agney/react-loading";
+import { GetStaticPaths } from "next";
+import { GetStaticProps, GetStaticPropsContext } from "next";
 
 import api from "../../services/api";
 import * as S from "../../styles/store";
 import ProductsTable from "../../components/ProductsTable";
 import RemoveStoreModal from "../../components/RemoveStoreModal";
+import dbConnect from "../../lib/dbConnect";
+import Store from "../../models/store";
+import Product from "../../models/product";
 
 export interface StoreData {
   _id: string;
@@ -15,7 +20,7 @@ export interface StoreData {
   name: string;
 }
 
-export const StorePage = () => {
+export const StorePage = ({ storeDataStatic, storeProductsDataStatic }) => {
   const [storeData, setStoreData] = useState({} as StoreData);
   const [storeProductsData, setStoreProductsData] = useState(null);
   const [showRemoveStoreModal, setShowRemoveStoreModal] = useState(false);
@@ -43,7 +48,13 @@ export const StorePage = () => {
       return;
     }
 
-    fetchStoreData();
+    if (!storeDataStatic && !storeProductsDataStatic) {
+      fetchStoreData();
+    }
+    {
+      setStoreData(storeDataStatic);
+      setStoreProductsData(storeProductsDataStatic);
+    }
   }, [id]);
 
   const handleOnRemoveStore = () => {
@@ -92,5 +103,43 @@ export const StorePage = () => {
     </S.StorePageWrapper>
   );
 };
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  const id = context.params.id;
+  await dbConnect();
+
+  const store = await Store.findById({ _id: id });
+  const storeProducts = await Product.find({ storeId: id });
+
+  return {
+    props: {
+      storeDataStatic: JSON.parse(JSON.stringify(store)),
+      storeProductsDataStatic: JSON.parse(JSON.stringify(storeProducts)),
+    },
+    revalidate: 60,
+  };
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  await dbConnect();
+  const stores = await Store.find();
+  const allStoresId = stores.map((store) => {
+    return {
+      params: { id: String(store._id) },
+    };
+  });
+
+  return {
+    paths: [...allStoresId],
+    fallback: true,
+  };
+};
+
+// export async function getStaticProps(context) {
+//   console.log(context);
+//   return {
+//     props: {},
+//   };
+// }
 
 export default StorePage;

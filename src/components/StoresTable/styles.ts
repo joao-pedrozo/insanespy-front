@@ -11,7 +11,9 @@ export const Table = styled.table`
 export const ThHeader = styled.th`
   color: black;
   font-weight: bold;
-  min-width: 200px;
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   padding: 10px;
   border-right: 1px solid #ccc;
 `;
